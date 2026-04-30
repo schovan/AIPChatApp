@@ -7,34 +7,6 @@ using System.Text.Json;
 
 namespace AIPChatApp.Services
 {
-    public enum NimDeltaKind
-    {
-        Thinking,
-        Final
-    }
-
-    public class NimDeltaEventArgs : EventArgs
-    {
-        public NimDeltaKind Kind { get; }
-        public string Text { get; }
-        public DateTime TimestampUtc { get; }
-        public long NanosecondOfSecond { get; }
-
-        public NimDeltaEventArgs(NimDeltaKind kind, string text, DateTime timestampUtc, long nanosecondOfSecond)
-        {
-            Kind = kind;
-            Text = text;
-            TimestampUtc = timestampUtc;
-            NanosecondOfSecond = nanosecondOfSecond;
-        }
-    }
-
-    public interface INimChatService
-    {
-        event EventHandler<NimDeltaEventArgs> DeltaReceived;
-        Task<string> StreamAsync(IReadOnlyList<(string Role, string Content)> history, CancellationToken ct = default);
-    }
-
     public class NimChatService : INimChatService
     {
         private const string ModelName = "minimaxai/minimax-m2.7";

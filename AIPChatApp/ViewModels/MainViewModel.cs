@@ -28,7 +28,7 @@ namespace AIPChatApp.ViewModels
         {
             _chat = chat;
             _chat.DeltaReceived += OnDeltaReceived;
-            Messages.Add(new MessageViewModel { Content = "Welcome to NVIDIA NIM Chat", IsUser = false, IsWelcome = true });
+            Messages.Add(new MessageViewModel { Content = "Welcome to Nvidia NIM Chat", IsUser = false, IsWelcome = true });
         }
 
         [RelayCommand]
