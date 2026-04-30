@@ -11,9 +11,9 @@ namespace AIPChatApp.ViewModels
         private readonly INimChatService _chat;
         private readonly List<(string Role, string Content)> _history = new();
 
+        private MessageViewModel? _waitingMessage;
         private MessageViewModel? _thinkingMessage;
         private MessageViewModel? _finalMessage;
-        private bool _thinkingStamped;
 
         [ObservableProperty]
         private ObservableCollection<MessageViewModel> _messages = new ObservableCollection<MessageViewModel>();
@@ -28,7 +28,7 @@ namespace AIPChatApp.ViewModels
         {
             _chat = chat;
             _chat.DeltaReceived += OnDeltaReceived;
-            Messages.Add(new MessageViewModel { Content = "Welcome to Nvidia NIM Chat", IsUser = false, IsWelcome = true });
+            Messages.Add(new MessageViewModel { Content = "Welcome to Nvidia NIM Chat", IsUser = false, IsSystem = true });
         }
 
         [RelayCommand]
@@ -46,9 +46,10 @@ namespace AIPChatApp.ViewModels
 
             _history.Add(("user", prompt));
 
-            _thinkingMessage = CreateAndWrite("Waiting for response…");
+            _waitingMessage = new MessageViewModel { Content = "Waiting for response…", IsUser = false, IsSystem = true };
+            Messages.Add(_waitingMessage);
+            _thinkingMessage = null;
             _finalMessage = null;
-            _thinkingStamped = false;
 
             try
             {
@@ -77,17 +78,19 @@ namespace AIPChatApp.ViewModels
             // Marshal to UI thread; use BeginInvoke so the network loop never blocks on rendering.
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
+                if (_waitingMessage != null)
+                {
+                    Messages.Remove(_waitingMessage);
+                    _waitingMessage = null;
+                }
+
                 if (e.Kind == NimDeltaKind.Thinking)
                 {
-                    if (_thinkingMessage != null)
+                    if (_thinkingMessage == null)
                     {
-                        if (!_thinkingStamped)
-                        {
-                            _thinkingMessage.Content = $"=== [THINKING PROCESS]{stamp} ===\n\n";
-                            _thinkingStamped = true;
-                        }
-                        _thinkingMessage.Content += e.Text;
+                        _thinkingMessage = CreateAndWrite($"=== [THINKING PROCESS]{stamp} ===\n\n");
                     }
+                    _thinkingMessage.Content += e.Text;
                 }
                 else
                 {
