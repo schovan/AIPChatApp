@@ -73,7 +73,6 @@ namespace AIPChatApp.ViewModels
         {
             var local = e.TimestampUtc.ToLocalTime();
             var ms = e.NanosecondOfSecond / 1_000_000;
-            var stamp = $" [{local:HH:mm:ss}.{ms:D3}]";
 
             // Marshal to UI thread; use BeginInvoke so the network loop never blocks on rendering.
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
@@ -88,21 +87,21 @@ namespace AIPChatApp.ViewModels
                 {
                     if (_thinkingMessage == null)
                     {
-                        _thinkingMessage = CreateAndWrite($"=== [THINKING PROCESS]{stamp} ===\n\n");
+                        _thinkingMessage = CreateAiMessage($"Thinking · {local:HH:mm:ss}.{ms:D3}");
                     }
                     _thinkingMessage.Content += e.Text;
                 }
                 else
                 {
-                    _finalMessage ??= CreateAndWrite($"=== [FINAL RESPONSE]{stamp} ===");
+                    _finalMessage ??= CreateAiMessage($"Response · {local:HH:mm:ss}.{ms:D3}");
                     _finalMessage.Content += e.Text;
                 }
             }));
         }
 
-        private MessageViewModel CreateAndWrite(string content)
+        private MessageViewModel CreateAiMessage(string header)
         {
-            var message = new MessageViewModel { Content = $"{content}\n\n", IsUser = false };
+            var message = new MessageViewModel { Header = header, Content = string.Empty, IsUser = false };
             Messages.Add(message);
             return message;
         }

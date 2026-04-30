@@ -25,8 +25,12 @@
             <Setter Property="Background" Value="#DBDBE2"/>
             <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="Padding" Value="10"/>
-            <Setter Property="Margin" Value="40,10,40,10"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style x:Key="AiHeaderStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#6E6E80"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="4,0,0,4"/>
         </Style>
         <Style x:Key="WelcomeMessageStyle" TargetType="TextBlock">
             <Setter Property="Foreground" Value="#6E6E80"/>
@@ -67,15 +71,20 @@
                                            Style="{StaticResource UserMessageTextStyle}"/>
                             </Border>
 
-                            <Border x:Name="AiMessageBorder"
-                                    Style="{StaticResource AiMessageStyle}"
-                                    Visibility="Collapsed"
-                                    MaxWidth="600">
-                                <markdig:MarkdownViewer Markdown="{Binding Content}"
-                                                        Foreground="#202123"
-                                                        FontFamily="Segoe UI, Segoe UI Emoji"
-                                                        FontSize="14"/>
-                            </Border>
+                            <StackPanel x:Name="AiMessageContainer"
+                                        Visibility="Collapsed"
+                                        HorizontalAlignment="Left"
+                                        Margin="40,10,40,10"
+                                        MaxWidth="600">
+                                <TextBlock Text="{Binding Header}"
+                                           Style="{StaticResource AiHeaderStyle}"/>
+                                <Border Style="{StaticResource AiMessageStyle}">
+                                    <markdig:MarkdownViewer Markdown="{Binding Content}"
+                                                            Foreground="#202123"
+                                                            FontFamily="Segoe UI, Segoe UI Emoji"
+                                                            FontSize="14"/>
+                                </Border>
+                            </StackPanel>
 
                             <TextBlock x:Name="WelcomeTextBlock"
                                        Text="{Binding Content}"
@@ -98,7 +107,7 @@
                                     <Condition Binding="{Binding IsSystem}" Value="False"/>
                                     <Condition Binding="{Binding IsUser}" Value="False"/>
                                 </MultiDataTrigger.Conditions>
-                                <Setter TargetName="AiMessageBorder" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="AiMessageContainer" Property="Visibility" Value="Visible"/>
                             </MultiDataTrigger>
                         </DataTemplate.Triggers>
                     </DataTemplate>
