@@ -109,10 +109,5 @@ namespace OpenAIChat.ViewModels
             Messages.Add(message);
             return message;
         }
-
-        private void Write(string content)
-        {
-            Messages.Add(new MessageViewModel { Content = content, IsUser = false });
-        }
     }
 }
