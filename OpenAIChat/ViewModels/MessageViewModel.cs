@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace AIPChatApp.ViewModels
+namespace OpenAIChat.ViewModels
 {
     public partial class MessageViewModel : ObservableObject
     {

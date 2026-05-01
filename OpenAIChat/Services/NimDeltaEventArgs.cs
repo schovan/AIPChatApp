@@ -1,4 +1,4 @@
-namespace AIPChatApp.Services
+namespace OpenAIChat.Services
 {
     public class NimDeltaEventArgs : EventArgs
     {

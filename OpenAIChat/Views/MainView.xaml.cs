@@ -1,8 +1,8 @@
 using System.Windows;
-using AIPChatApp.Services;
-using AIPChatApp.ViewModels;
+using OpenAIChat.Services;
+using OpenAIChat.ViewModels;
 
-namespace AIPChatApp.Views
+namespace OpenAIChat.Views
 {
     public partial class MainView : Window
     {

@@ -1,7 +1,7 @@
 using System.IO;
-using AIPChatApp.Views;
+using OpenAIChat.Views;
 
-namespace AIPChatApp.Services
+namespace OpenAIChat.Services
 {
     public class ApiKeyService : IApiKeyService
     {

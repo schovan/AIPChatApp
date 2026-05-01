@@ -1,7 +1,7 @@
-using AIPChatApp.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
+using OpenAIChat.Services;
 
-namespace AIPChatApp.ViewModels
+namespace OpenAIChat.ViewModels
 {
     public partial class ApiKeyViewModel : ObservableObject, IDialogViewModel<string>
     {

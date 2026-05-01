@@ -2,7 +2,7 @@ using Microsoft.Xaml.Behaviors;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace AIPChatApp.Behaviors
+namespace OpenAIChat.Behaviors
 {
     public class EnterToSendBehavior : Behavior<TextBox>
     {

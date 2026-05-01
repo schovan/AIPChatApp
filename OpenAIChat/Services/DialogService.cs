@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace AIPChatApp.Services
+namespace OpenAIChat.Services
 {
     public class DialogService : IDialogService
     {

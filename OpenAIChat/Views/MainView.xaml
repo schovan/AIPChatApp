@@ -1,0 +1,206 @@
+<Window x:Class="OpenAIChat.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:behaviors="clr-namespace:OpenAIChat.Behaviors"
+        xmlns:markdig="clr-namespace:Markdig.Wpf;assembly=Markdig.Wpf"
+        xmlns:viewModels="clr-namespace:OpenAIChat.ViewModels"
+        mc:Ignorable="d"
+        Title="OpenAI Chat" Height="700" Width="900"
+        Background="#F7F7F8"
+        WindowStartupLocation="CenterScreen"
+        FocusManager.FocusedElement="{Binding ElementName=InputTextBox}">
+
+    <Window.Resources>
+        <Style x:Key="UserMessageStyle" TargetType="Border">
+            <Setter Property="Background" Value="#C8C8D0"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="40,10,40,10"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+        <Style x:Key="AiMessageStyle" TargetType="Border">
+            <Setter Property="Background" Value="#DBDBE2"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="10"/>
+        </Style>
+        <Style x:Key="AiHeaderStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#6E6E80"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="4,0,0,4"/>
+        </Style>
+        <Style x:Key="WelcomeMessageStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#6E6E80"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontStyle" Value="Italic"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="40,30,0,10"/>
+            <Setter Property="TextAlignment" Value="Left"/>
+        </Style>
+        <Style x:Key="UserMessageTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#202123"/>
+            <Setter Property="FontFamily" Value="Segoe UI, Segoe UI Emoji"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" x:Name="ChatScrollViewer">
+            <i:Interaction.Behaviors>
+                <behaviors:AutoScrollToBottomBehavior ItemsSource="{Binding Messages}" />
+            </i:Interaction.Behaviors>
+            <ItemsControl ItemsSource="{Binding Messages}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type viewModels:MessageViewModel}">
+                        <Grid Margin="0,5,0,5">
+                            <Border x:Name="UserMessageBorder"
+                                    Style="{StaticResource UserMessageStyle}"
+                                    Visibility="Collapsed"
+                                    MaxWidth="600">
+                                <TextBlock Text="{Binding Content}"
+                                           Style="{StaticResource UserMessageTextStyle}"/>
+                            </Border>
+
+                            <StackPanel x:Name="AiMessageContainer"
+                                        Visibility="Collapsed"
+                                        HorizontalAlignment="Left"
+                                        Margin="40,10,40,10"
+                                        MaxWidth="600">
+                                <TextBlock Text="{Binding Header}"
+                                           Style="{StaticResource AiHeaderStyle}"/>
+                                <Border Style="{StaticResource AiMessageStyle}">
+                                    <markdig:MarkdownViewer Markdown="{Binding Content}"
+                                                            Foreground="#202123"
+                                                            FontFamily="Segoe UI, Segoe UI Emoji"
+                                                            FontSize="14"/>
+                                </Border>
+                            </StackPanel>
+
+                            <TextBlock x:Name="WelcomeTextBlock"
+                                       Text="{Binding Content}"
+                                       Style="{StaticResource WelcomeMessageStyle}"
+                                       Visibility="Collapsed"/>
+                        </Grid>
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding IsSystem}" Value="True">
+                                <Setter TargetName="WelcomeTextBlock" Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsSystem}" Value="False"/>
+                                    <Condition Binding="{Binding IsUser}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter TargetName="UserMessageBorder" Property="Visibility" Value="Visible"/>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsSystem}" Value="False"/>
+                                    <Condition Binding="{Binding IsUser}" Value="False"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter TargetName="AiMessageContainer" Property="Visibility" Value="Visible"/>
+                            </MultiDataTrigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <Border Grid.Row="2" Background="#FFFFFF" Padding="20" BorderBrush="#E5E5E5" BorderThickness="0,1,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox Grid.Column="0"
+                         x:Name="InputTextBox"
+                         Text="{Binding UserInput, UpdateSourceTrigger=PropertyChanged}"
+                         IsReadOnly="{Binding IsLoading}"
+                         VerticalAlignment="Center"
+                         Background="#F7F7F8"
+                         Foreground="#202123"
+                         Padding="12"
+                         BorderBrush="#E5E5E5"
+                         BorderThickness="1"
+                         FontSize="14"
+                         Height="Auto"
+                         AcceptsReturn="True">
+                    <i:Interaction.Behaviors>
+                        <behaviors:EnterToSendBehavior Command="{Binding SendMessageCommand}" />
+                    </i:Interaction.Behaviors>
+                    <TextBox.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="6"/>
+                        </Style>
+                    </TextBox.Resources>
+                    <TextBox.Style>
+                        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TextBox">
+                                        <Border x:Name="Bd"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="6">
+                                            <ScrollViewer x:Name="PART_ContentHost"
+                                                          Focusable="False"
+                                                          Padding="{TemplateBinding Padding}"
+                                                          HorizontalScrollBarVisibility="Hidden"
+                                                          VerticalScrollBarVisibility="Hidden"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                    <Setter Property="Opacity" Value="0.6"/>
+                                    <Setter Property="Background" Value="#E5E5EA"/>
+                                    <Setter Property="Foreground" Value="#9090A0"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+
+                <Button Grid.Column="1"
+                        Command="{Binding SendMessageCommand}"
+                        Margin="10,0,0,0"
+                        Background="#10A37F"
+                        Foreground="White"
+                        Content="Send"
+                        Padding="15,8"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        BorderThickness="0"
+                        Cursor="Hand">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="6"/>
+                        </Style>
+                    </Button.Resources>
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                    <Setter Property="Opacity" Value="0.5"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

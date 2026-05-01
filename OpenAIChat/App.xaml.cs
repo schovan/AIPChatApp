@@ -1,6 +1,6 @@
 using System.Windows;
 
-namespace AIPChatApp
+namespace OpenAIChat
 {
     public partial class App : Application
     {

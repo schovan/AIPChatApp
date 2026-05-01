@@ -2,9 +2,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Windows;
-using AIPChatApp.Services;
+using OpenAIChat.Services;
 
-namespace AIPChatApp.ViewModels
+namespace OpenAIChat.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
@@ -28,7 +28,7 @@ namespace AIPChatApp.ViewModels
         {
             _chat = chat;
             _chat.DeltaReceived += OnDeltaReceived;
-            Messages.Add(new MessageViewModel { Content = "Welcome to Nvidia NIM Chat", IsUser = false, IsSystem = true });
+            Messages.Add(new MessageViewModel { Content = "Welcome to OpenAI Chat", IsUser = false, IsSystem = true });
         }
 
         [RelayCommand]

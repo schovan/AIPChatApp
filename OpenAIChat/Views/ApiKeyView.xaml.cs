@@ -1,7 +1,7 @@
 using System.Windows;
-using AIPChatApp.ViewModels;
+using OpenAIChat.ViewModels;
 
-namespace AIPChatApp.Views
+namespace OpenAIChat.Views
 {
     public partial class ApiKeyView : Window
     {

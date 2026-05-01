@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 using System.Windows.Controls;
 using System.Windows;
 
-namespace AIPChatApp.Behaviors
+namespace OpenAIChat.Behaviors
 {
     public class AutoScrollToBottomBehavior : Behavior<ScrollViewer>
     {

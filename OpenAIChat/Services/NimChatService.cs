@@ -5,7 +5,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
-namespace AIPChatApp.Services
+namespace OpenAIChat.Services
 {
     public class NimChatService : INimChatService
     {
