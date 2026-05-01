@@ -14,15 +14,6 @@ namespace OpenAIChat.Services
 
         private readonly HttpClient _http;
 
-        private static readonly DateTime _anchorUtc = DateTime.UtcNow;
-        private static readonly long _anchorTicks = Stopwatch.GetTimestamp();
-        private static readonly double _ticksPerStopwatchTick = TimeSpan.TicksPerMillisecond * 1.0 / (Stopwatch.Frequency / 1000.0);
-
-        private static DateTime Now()
-        {
-            return _anchorUtc.AddTicks((long)((Stopwatch.GetTimestamp() - _anchorTicks) * _ticksPerStopwatchTick));
-        }
-
         public event EventHandler<NimDeltaEventArgs>? DeltaReceived;
 
         public NimChatService(IApiKeyService apiKeyService)
@@ -75,7 +66,7 @@ namespace OpenAIChat.Services
                         break;
                     }
 
-                    var utc = Now();
+                    var utc = StopwatchClock.UtcNow();
 
                     int charCount = decoder.GetChars(buffer, 0, read, charBuffer, 0);
 

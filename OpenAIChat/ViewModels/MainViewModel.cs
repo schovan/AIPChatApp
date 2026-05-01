@@ -40,7 +40,8 @@ namespace OpenAIChat.ViewModels
             }
 
             var prompt = UserInput;
-            Messages.Add(new MessageViewModel { Content = prompt, IsUser = true });
+            var now = StopwatchClock.LocalNow();
+            Messages.Add(new MessageViewModel { Content = prompt, IsUser = true, Header = $"You · {StopwatchClock.FormatTimestamp(now)}" });
             UserInput = string.Empty;
             IsLoading = true;
 
@@ -72,9 +73,7 @@ namespace OpenAIChat.ViewModels
         private void OnDeltaReceived(object? sender, NimDeltaEventArgs e)
         {
             var local = e.TimestampUtc.ToLocalTime();
-            var ms = local.Millisecond;
 
-            // Marshal to UI thread; use BeginInvoke so the network loop never blocks on rendering.
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
                 if (_waitingMessage != null)
@@ -87,13 +86,13 @@ namespace OpenAIChat.ViewModels
                 {
                     if (_thinkingMessage == null)
                     {
-                        _thinkingMessage = CreateAiMessage($"Thinking · {local:HH:mm:ss}.{ms:D3}");
+                        _thinkingMessage = CreateAiMessage($"Thinking · {StopwatchClock.FormatTimestamp(local)}");
                     }
                     _thinkingMessage.Content += e.Text;
                 }
                 else
                 {
-                    _finalMessage ??= CreateAiMessage($"Response · {local:HH:mm:ss}.{ms:D3}");
+                    _finalMessage ??= CreateAiMessage($"Response · {StopwatchClock.FormatTimestamp(local)}");
                     _finalMessage.Content += e.Text;
                 }
             }));
