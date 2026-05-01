@@ -9,8 +9,8 @@ namespace OpenAIChat.Services
 {
     public class NimChatService : INimChatService
     {
-        private const string ModelName = "minimaxai/minimax-m2.7";
-        private const string Endpoint = "https://integrate.api.nvidia.com/v1/chat/completions";
+        private const string ModelName = "zai-org/GLM-5.1-FP8";
+        private const string Endpoint = "https://api.us-west-2.modal.direct/v1/chat/completions";
 
         private readonly HttpClient _http;
 

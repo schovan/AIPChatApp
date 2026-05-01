@@ -18,7 +18,7 @@
             <Setter Property="Background" Value="#C8C8D0"/>
             <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="Padding" Value="10"/>
-            <Setter Property="Margin" Value="40,10,40,10"/>
+            <Setter Property="Margin" Value="40,0,40,10"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
         </Style>
         <Style x:Key="AiMessageStyle" TargetType="Border">
@@ -36,7 +36,7 @@
             <Setter Property="Foreground" Value="#6E6E80"/>
             <Setter Property="FontSize" Value="11"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Margin" Value="0,0,44,4"/>
+            <Setter Property="Margin" Value="0,10,44,4"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
         </Style>
         <Style x:Key="WelcomeMessageStyle" TargetType="TextBlock">
