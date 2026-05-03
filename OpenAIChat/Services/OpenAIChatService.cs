@@ -2,6 +2,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using OpenAIChat.Extensions;
+using OpenAIChat.Models;
+using OpenAIChat.Tools;
 
 namespace OpenAIChat.Services
 {
@@ -11,6 +14,7 @@ namespace OpenAIChat.Services
         private const string Endpoint = "https://api.us-west-2.modal.direct/v1/chat/completions";
 
         private readonly HttpClient _http;
+        private readonly ReasoningEffort _reasoningEffort = ReasoningEffort.High;
 
         public event EventHandler<OpenAIDeltaEventArgs>? DeltaReceived;
 
@@ -33,6 +37,7 @@ namespace OpenAIChat.Services
                     top_p = 0.95,
                     max_tokens = 16384,
                     stream = true,
+                    reasoning_effort = _reasoningEffort.ToApiValue(),
                     chat_template_kwargs = new { enable_thinking = true },
                     reasoning_budget = 16384
                 };

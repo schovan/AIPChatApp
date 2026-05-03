@@ -1,3 +1,5 @@
+using OpenAIChat.Models;
+
 namespace OpenAIChat.Services
 {
     public interface IOpenAIChatService

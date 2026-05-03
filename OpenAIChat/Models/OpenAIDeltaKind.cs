@@ -1,4 +1,4 @@
-namespace OpenAIChat.Services
+namespace OpenAIChat.Models
 {
     public enum OpenAIDeltaKind
     {

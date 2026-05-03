@@ -2,7 +2,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Windows;
+using OpenAIChat.Models;
 using OpenAIChat.Services;
+using OpenAIChat.Tools;
 
 namespace OpenAIChat.ViewModels
 {

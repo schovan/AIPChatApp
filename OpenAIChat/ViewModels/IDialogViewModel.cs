@@ -1,4 +1,4 @@
-﻿namespace OpenAIChat.Services
+﻿namespace OpenAIChat.ViewModels
 {
     public interface IDialogViewModel<out TResult>
     {

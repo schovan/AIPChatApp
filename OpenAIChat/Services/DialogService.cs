@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using OpenAIChat.ViewModels;
 
 namespace OpenAIChat.Services
 {

@@ -1,5 +1,4 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using OpenAIChat.Services;
 
 namespace OpenAIChat.ViewModels
 {
